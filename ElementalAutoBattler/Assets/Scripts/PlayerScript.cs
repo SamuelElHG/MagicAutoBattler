@@ -52,7 +52,7 @@ public class PlayerScript : MonoBehaviour
           {
               enemy.receiveAttack(finalAttack);
           }*/
-        enemy.receiveAttack(finalAttack);
+        enemy.receiveAttack(finalAttack, activeWeapon.weaponElement);
 
     }
     public void receiveDamage(float damageTaken)

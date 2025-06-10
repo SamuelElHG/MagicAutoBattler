@@ -28,7 +28,7 @@ public class FireballScript : MonoBehaviour
     {
         if (Available)
         {
-            enemy.receiveAttack(Damage);
+            enemy.receiveAttack(Damage, Element.Fire);
             StartCoroutine(cdSkill());
         }
         else

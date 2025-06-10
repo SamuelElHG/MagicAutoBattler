@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static Elements;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     public TMP_Text HealthText;
+
+    [SerializeField] public ArmorScript activeArmor;
+
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +46,12 @@ public class EnemyScript : MonoBehaviour
         HealthText.text = HealthPoints.ToString();
 
     }
-    public void receiveAttack(float attackDamag)
+    public void receiveAttack(float attackDamag, Element attackElement)
     {
-        float damageReceived;
-        damageReceived = attackDamag- Defense;
-        receiveDamage(damageReceived);
+        float multiplier = ElementalRules.GetMultiplier(activeArmor.ArmorElement, attackElement);
+        float adjustedDamage = (attackDamag * multiplier) - Defense+activeArmor.defense;
+        adjustedDamage = Mathf.Max(adjustedDamage, 0);
+        receiveDamage(adjustedDamage);
     }
 
     IEnumerator combat()

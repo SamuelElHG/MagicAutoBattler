@@ -27,7 +27,7 @@ public class BasicSkillScript : MonoBehaviour
     {
         if (Available)
         {
-            enemy.receiveAttack(Damage);
+            enemy.receiveAttack(Damage,SkillElement);
             StartCoroutine(cdSkill());
         }
         else
