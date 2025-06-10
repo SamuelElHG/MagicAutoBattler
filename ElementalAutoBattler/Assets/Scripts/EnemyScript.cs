@@ -44,9 +44,8 @@ public class EnemyScript : MonoBehaviour
     }
     public void receiveAttack(float attackDamag)
     {
-        Debug.Log("i am being attacked");
         float damageReceived;
-        damageReceived = attackDamag-defense;
+        damageReceived = attackDamag- Defense;
         receiveDamage(damageReceived);
     }
 

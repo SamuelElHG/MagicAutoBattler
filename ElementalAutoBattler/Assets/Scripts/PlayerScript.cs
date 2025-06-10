@@ -15,6 +15,8 @@ public class PlayerScript : MonoBehaviour
     #endregion
 
     public TMP_Text HealthText;
+    [SerializeField] public WeaponScript activeWeapon;
+    [SerializeField] public ArmorScript activeArmor;
 
 
     // Start is called before the first frame update
@@ -24,12 +26,6 @@ public class PlayerScript : MonoBehaviour
 
         Debug.Log("startedEverything");
         StartCoroutine(combat());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     IEnumerator combat()
@@ -46,9 +42,17 @@ public class PlayerScript : MonoBehaviour
 
     private void attack()
     {
-        Debug.Log("attacked");
-
-        enemy.receiveAttack(AttackDamage);
+        float finalAttack = AttackDamage + activeWeapon.weaponDamage;
+        Debug.Log(finalAttack);
+        /*  if(Random.Range(1,100)<=CriticalChance) 
+          {
+              enemy.receiveAttack(finalAttack * 2);
+          }
+          else
+          {
+              enemy.receiveAttack(finalAttack);
+          }*/
+        enemy.receiveAttack(finalAttack);
 
     }
     public void receiveDamage(float damageTaken)
@@ -59,9 +63,11 @@ public class PlayerScript : MonoBehaviour
     }
     public void receiveAttack(float attackDamag)
     {
+        float finalDefense = defense;
         Debug.Log("i am being attacked");
         float damageReceived;
         damageReceived = attackDamag - defense;
         receiveDamage(damageReceived);
     }
+
 }
