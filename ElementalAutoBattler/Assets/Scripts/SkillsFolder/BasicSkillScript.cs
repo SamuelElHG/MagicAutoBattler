@@ -5,25 +5,13 @@ using static Elements;
 
 public class BasicSkillScript : MonoBehaviour
 {
-    [SerializeField] private Element SkillElement;
-    [SerializeField] private EnemyScript enemy;
-    [SerializeField] private float Damage;
-    [SerializeField] private float cooldown;
-    [SerializeField] private bool Available = true;
+    [SerializeField] protected Element SkillElement;
+    [SerializeField] protected EnemyScript enemy;
+    [SerializeField] protected float Damage;
+    [SerializeField] protected float cooldown;
+    [SerializeField] protected bool Available = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void SkillAttack()
+    public virtual void SkillAttack()
     {
         if (Available)
         {
@@ -36,7 +24,7 @@ public class BasicSkillScript : MonoBehaviour
         }
     }
 
-    IEnumerator cdSkill()
+    public IEnumerator cdSkill()
     {
         Available = false;
         yield return new WaitForSeconds(cooldown);

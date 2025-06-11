@@ -11,7 +11,7 @@ public class ArmorScript : MonoBehaviour
 
     [SerializeField] private PlayerScript playerObject;
 
-    public void switchWeapon()
+    public void switchArmor()
     {
         playerObject.activeArmor = gameObject.GetComponent<ArmorScript>();
     }

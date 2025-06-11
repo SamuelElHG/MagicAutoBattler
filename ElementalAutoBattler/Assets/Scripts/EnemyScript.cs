@@ -19,6 +19,8 @@ public class EnemyScript : MonoBehaviour
     public TMP_Text HealthText;
 
     [SerializeField] public ArmorScript activeArmor;
+    //[SerializeField] public ArmorScript activeWeapon;
+
 
 
     // Start is called before the first frame update
@@ -37,7 +39,7 @@ public class EnemyScript : MonoBehaviour
 
     public void attack()
     {
-        player.receiveAttack(AttackDamage);
+        player.receiveAttack(AttackDamage, activeArmor.ArmorElement);
     }
 
     public void receiveDamage(float damageTaken)

@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static Elements;
 
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField] private EnemyScript enemy;
     #region stats
-    [SerializeField] private float AttackDamage, Defense, AttackSpeed, CriticalChance, HealthPoints;
+    [SerializeField] public float AttackDamage, Defense, AttackSpeed, CriticalChance, HealthPoints;
     #endregion
 
     #region BattleAttributes
@@ -34,7 +35,7 @@ public class PlayerScript : MonoBehaviour
             Debug.Log("attack");
 
             attack();
-            yield return new WaitForSeconds(10.0f/AttackSpeed);
+            yield return new WaitForSeconds(1f/(AttackSpeed+activeWeapon.weaponSpeed));
 
         }
 
@@ -61,13 +62,12 @@ public class PlayerScript : MonoBehaviour
         HealthText.text = HealthPoints.ToString();
 
     }
-    public void receiveAttack(float attackDamag)
+    public void receiveAttack(float attackDamag, Element attackElement)
     {
-        float finalDefense = defense;
-        Debug.Log("i am being attacked");
-        float damageReceived;
-        damageReceived = attackDamag - defense;
-        receiveDamage(damageReceived);
+        float multiplier = ElementalRules.GetMultiplier(activeArmor.ArmorElement, attackElement);
+        float adjustedDamage = (attackDamag * multiplier) - Defense + activeArmor.defense;
+        adjustedDamage = Mathf.Max(adjustedDamage, 0);
+        receiveDamage(adjustedDamage);
     }
 
 }
