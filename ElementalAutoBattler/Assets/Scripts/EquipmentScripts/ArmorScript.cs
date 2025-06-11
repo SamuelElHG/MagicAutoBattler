@@ -11,9 +11,27 @@ public class ArmorScript : MonoBehaviour
 
     [SerializeField] private PlayerScript playerObject;
 
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero);
+
+            if (hit.collider != null && hit.collider.gameObject == this.gameObject)
+            {
+                switchArmor();
+            }
+        }
+    }
+
+
     public void switchArmor()
     {
-        playerObject.activeArmor = gameObject.GetComponent<ArmorScript>();
+        if(playerObject.armorChangeAvailable) {
+            playerObject.activeArmor = gameObject.GetComponent<ArmorScript>();
+            StartCoroutine(playerObject.changeArmorCD(cooldown));
+        }
     }
 
 }

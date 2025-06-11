@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using static Elements;
+using UnityEngine.SceneManagement;
 
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField] private PlayerScript player;
 
     #region stats
-    [SerializeField] private float AttackDamage, Defense, AttackSpeed, CriticalChance, HealthPoints;
+    [SerializeField] public float AttackDamage, Defense, AttackSpeed, CriticalChance, HealthPoints;
     #endregion
 
     #region BattleAttributes
@@ -19,33 +20,37 @@ public class EnemyScript : MonoBehaviour
     public TMP_Text HealthText;
 
     [SerializeField] public ArmorScript activeArmor;
-    //[SerializeField] public ArmorScript activeWeapon;
+    [SerializeField] public WeaponScript activeWeapon;
 
+    public bool weaponChangeAvailable = true;
+    public bool armorChangeAvailable = true;
+    [SerializeField] private string sceneName;
 
+    [SerializeField] private List<ArmorScript> armorsInventory;
+    [SerializeField] private List <WeaponScript> weaponsInventory;
 
-    // Start is called before the first frame update
-    void Start()
+    public void InitiateCombat()
     {
         HealthText.text = HealthPoints.ToString();
         Debug.Log("startedEverything");
+        StartCoroutine(ArmorLoop());
+        StartCoroutine(WeaponLoop());
         StartCoroutine(combat());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void attack()
     {
-        player.receiveAttack(AttackDamage, activeArmor.ArmorElement);
+        player.receiveAttack(AttackDamage, activeWeapon.weaponElement);
     }
 
     public void receiveDamage(float damageTaken)
     {
         HealthPoints -= damageTaken;
         HealthText.text = HealthPoints.ToString();
+        if(HealthPoints<=0)
+        {
+
+        }
 
     }
     public void receiveAttack(float attackDamag, Element attackElement)
@@ -68,4 +73,65 @@ public class EnemyScript : MonoBehaviour
         }
 
     }
+    public void WinGame()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void switchArmorsRandom()
+    {
+        if(armorChangeAvailable)
+        {
+            activeArmor = armorsInventory[Random.Range(0, armorsInventory.Count)];
+            StartCoroutine(armorChangeCD());
+        }
+    }
+
+    private IEnumerator armorChangeCD()
+    {
+        armorChangeAvailable = false;
+        yield return new WaitForSeconds(activeArmor.cooldown);
+        armorChangeAvailable = true;
+    }
+    private IEnumerator ArmorLoop()
+    {
+        while (true)
+        {
+            if (armorChangeAvailable)
+            {
+                switchArmorsRandom();
+            }
+
+            yield return new WaitForSeconds(0.1f); // Control de llamada
+        }
+    }
+    public void switchWeaponsRandom()
+    {
+        if (weaponChangeAvailable)
+        {
+            activeWeapon = weaponsInventory[Random.Range(0, weaponsInventory.Count)];
+            StartCoroutine(weaponChangeCD());
+        }
+    }
+
+    private IEnumerator weaponChangeCD()
+    {
+        weaponChangeAvailable = false;
+        yield return new WaitForSeconds(activeWeapon.weaponCooldown);
+        weaponChangeAvailable = true;
+    }
+    private IEnumerator WeaponLoop()
+    {
+        while (true)
+        {
+            if (weaponChangeAvailable)
+            {
+                switchWeaponsRandom();
+            }
+
+            yield return new WaitForSeconds(0.1f); // Control de llamada
+        }
+    }
+
+
 }

@@ -2,30 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Clock : MonoBehaviour
 {
-    public float minutes = 1f; // Puedes cambiar este valor desde el Inspector
+
+    public float minutes = 1f; // Configurable desde el Inspector
     private float timeLeft;
     public TMP_Text timerText;
 
-    void Start()
-    {
-        timeLeft = minutes * 60f;
-    }
+    private bool isRunning = false;
 
     void Update()
     {
-        if (timeLeft > 0)
+        if (isRunning && timeLeft > 0)
         {
             timeLeft -= Time.deltaTime;
             UpdateTimerUI();
+
+            if (timeLeft <= 0)
+            {
+                timeLeft = 0;
+                isRunning = false;
+                TimerEnded();
+            }
         }
-        else
-        {
-            timeLeft = 0;
-            TimerEnded();
-        }
+    }
+
+    public void StartTimer()
+    {
+        timeLeft = minutes * 60f;
+        isRunning = true;
+        UpdateTimerUI();
     }
 
     void UpdateTimerUI()
@@ -38,6 +46,11 @@ public class Clock : MonoBehaviour
     void TimerEnded()
     {
         Debug.Log("¡El tiempo se ha terminado!");
-        // Aquí puedes agregar la lógica que quieras cuando se acabe el tiempo
+        GameOver();
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
     }
 }
