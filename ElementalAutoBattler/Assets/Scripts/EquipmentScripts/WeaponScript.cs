@@ -12,7 +12,9 @@ public class WeaponScript : MonoBehaviour
     [SerializeField] public float weaponCooldown;
     [SerializeField] public Element weaponElement;
 
-    [SerializeField] private PlayerScript playerObject;
+    [SerializeField] private PlayerScript playerObject; 
+    public WeaponsInventory weaponSelector;
+
 
     void Update()
     {
@@ -35,5 +37,11 @@ public class WeaponScript : MonoBehaviour
             playerObject.activeWeapon = gameObject.GetComponent<WeaponScript>();
             StartCoroutine(playerObject.changeWeaponCD(weaponCooldown));
         }
+    }
+
+
+    void OnMouseDown()
+    {
+        weaponSelector.SelectWeapon(gameObject.GetComponent<WeaponScript>());
     }
 }

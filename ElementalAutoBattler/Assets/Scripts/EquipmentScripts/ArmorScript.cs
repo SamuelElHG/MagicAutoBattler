@@ -10,6 +10,7 @@ public class ArmorScript : MonoBehaviour
     [SerializeField] public float cooldown;
 
     [SerializeField] private PlayerScript playerObject;
+    public ArmorsInventory ArmorSelector;
 
     void Update()
     {
@@ -34,4 +35,8 @@ public class ArmorScript : MonoBehaviour
         }
     }
 
+    void OnMouseDown()
+    {
+        ArmorSelector.SelectArmor(gameObject.GetComponent<ArmorScript>());
+    }
 }

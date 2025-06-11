@@ -9,7 +9,8 @@ public class BasicSkillScript : MonoBehaviour
     [SerializeField] protected EnemyScript enemy;
     [SerializeField] protected float Damage;
     [SerializeField] protected float cooldown;
-    [SerializeField] protected bool Available = true;
+    [SerializeField] public bool Available = false;
+    public SkillsInventory SkillSelector;
 
     // Update is called once per frame
     void Update()
@@ -44,5 +45,11 @@ public class BasicSkillScript : MonoBehaviour
         Available = false;
         yield return new WaitForSeconds(cooldown);
         Available = true;
+    }
+
+
+    void OnMouseDown()
+    {
+        SkillSelector.SelectSkill(gameObject.GetComponent<BasicSkillScript>());
     }
 }
