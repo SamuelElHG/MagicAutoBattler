@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class EnemyScript : MonoBehaviour
 {
+    [SerializeField] private string name;
+    public TMP_Text nameText;
+
     [SerializeField] private PlayerScript player;
 
     #region stats
@@ -28,10 +31,14 @@ public class EnemyScript : MonoBehaviour
 
     [SerializeField] private List<ArmorScript> armorsInventory;
     [SerializeField] private List <WeaponScript> weaponsInventory;
+    public void Start()
+    {        nameText.text = name;
 
+        HealthText.text = HealthPoints.ToString();
+    }
     public void InitiateCombat()
     {
-        HealthText.text = HealthPoints.ToString();
+
         Debug.Log("startedEverything");
         StartCoroutine(ArmorLoop());
         StartCoroutine(WeaponLoop());
@@ -49,7 +56,7 @@ public class EnemyScript : MonoBehaviour
         HealthText.text = HealthPoints.ToString();
         if(HealthPoints<=0)
         {
-
+            WinGame();
         }
 
     }
@@ -68,7 +75,7 @@ public class EnemyScript : MonoBehaviour
             Debug.Log("attack");
 
             attack();
-            yield return new WaitForSeconds(10.0f / AttackSpeed);
+            yield return new WaitForSeconds(1.0f / AttackSpeed);
 
         }
 

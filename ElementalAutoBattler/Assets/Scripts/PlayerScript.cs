@@ -7,6 +7,10 @@ using static Elements;
 
 public class PlayerScript : MonoBehaviour
 {
+    [SerializeField] private string name;
+    public TMP_Text nameText;
+
+
     [SerializeField] private EnemyScript enemy;
     #region stats
     [SerializeField] public float AttackDamage, Defense, AttackSpeed, CriticalChance, HealthPoints;
@@ -27,10 +31,18 @@ public class PlayerScript : MonoBehaviour
     public bool thorns = false;
     public bool canAttack = false;
 
+    public TMP_Text AvailablePointsText;
 
+    public void Start()
+    {
+        AvailablePointsText.text = pointsToSpend.ToString(); 
+        nameText.text = name;
+
+        HealthText.text = HealthPoints.ToString();
+    }
     public void InitiateCombat()
     {
-        HealthText.text = HealthPoints.ToString();
+
 
         AttackDamage += offense;
         Defense += defensive;
@@ -46,7 +58,7 @@ public class PlayerScript : MonoBehaviour
             Debug.Log("attack");
 
             attack();
-            yield return new WaitForSeconds(15f/(AttackSpeed+activeWeapon.weaponSpeed));
+            yield return new WaitForSeconds(1.0f/(AttackSpeed+activeWeapon.weaponSpeed));
 
         }
 
@@ -134,6 +146,7 @@ public class PlayerScript : MonoBehaviour
         }
 
         pointsToSpend--;
+        AvailablePointsText.text = pointsToSpend.ToString();
     }
 
     public void RemovePointFromStat(string statName)
@@ -145,27 +158,31 @@ public class PlayerScript : MonoBehaviour
                 {
                     offense--;
                     pointsToSpend++;
+                    AvailablePointsText.text = pointsToSpend.ToString();
                 }
                 break;
             case "Defense":
                 if (defensive > 0)
                 {
                     defensive--;
-                    pointsToSpend++;
+                    pointsToSpend++; AvailablePointsText.text = pointsToSpend.ToString();
+
                 }
                 break;
             case "Agility":
                 if (agility > 0)
                 {
                     agility--;
-                    pointsToSpend++;
+                    pointsToSpend++; AvailablePointsText.text = pointsToSpend.ToString();
+
                 }
                 break;
             case "Luck":
                 if (luck > 0)
                 {
                     luck--;
-                    pointsToSpend++;
+                    pointsToSpend++; AvailablePointsText.text = pointsToSpend.ToString();
+
                 }
                 break;
             default:
