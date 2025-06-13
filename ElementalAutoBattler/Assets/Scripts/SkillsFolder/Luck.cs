@@ -29,8 +29,11 @@ public class Luck : BasicSkillScript
     {
 
         player.CriticalChance = 100;
+        player.BuffApplyed.text = "Lucky";
         yield return new WaitForSeconds(5);
         player.CriticalChance = playerBaseCrit;
+        player.BuffApplyed.text = "";
+
 
     }
 

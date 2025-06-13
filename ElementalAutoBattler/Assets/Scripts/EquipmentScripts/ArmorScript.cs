@@ -11,7 +11,10 @@ public class ArmorScript : MonoBehaviour
 
     [SerializeField] private PlayerScript playerObject;
     public ArmorsInventory ArmorSelector;
+    [SerializeField] public GameObject fondoSeleccionado;
 
+    public GameObject infoPanel;
+    public string infoText;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -31,6 +34,7 @@ public class ArmorScript : MonoBehaviour
     {
         if(playerObject.armorChangeAvailable) {
             playerObject.activeArmor = gameObject.GetComponent<ArmorScript>();
+            playerObject.activeArmorSprite.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
             StartCoroutine(playerObject.changeArmorCD(cooldown));
         }
     }
@@ -38,5 +42,15 @@ public class ArmorScript : MonoBehaviour
     void OnMouseDown()
     {
         ArmorSelector.SelectArmor(gameObject.GetComponent<ArmorScript>());
+    }
+
+    private void OnMouseEnter()
+    {
+        infoPanel.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        infoPanel.SetActive(false);
     }
 }

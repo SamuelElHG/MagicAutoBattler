@@ -9,6 +9,9 @@ public class PlayerScript : MonoBehaviour
 {
     [SerializeField] private string name;
     public TMP_Text nameText;
+    public TMP_Text damageReceivedText;
+    public TMP_Text armorSwitchReady, weaponSwitchReady;
+    [SerializeField] public SpriteRenderer activeArmorSprite, activeWeaponSprite;
 
 
     [SerializeField] private EnemyScript enemy;
@@ -18,10 +21,12 @@ public class PlayerScript : MonoBehaviour
 
     #region BattleAttributes
     [SerializeField] private float offense, defensive, agility, luck;
-    public int pointsToSpend = 0;
+    public int pointsToSpend = 10;
     #endregion
 
     public TMP_Text HealthText;
+    public TMP_Text BuffApplyed;
+
     [SerializeField] public WeaponScript activeWeapon;
     [SerializeField] public ArmorScript activeArmor;
 
@@ -37,7 +42,9 @@ public class PlayerScript : MonoBehaviour
     {
         AvailablePointsText.text = pointsToSpend.ToString(); 
         nameText.text = name;
-
+        armorSwitchReady.text = "Armor change Avaiable";
+        weaponSwitchReady.text = "Weapon Switch Available";
+        BuffApplyed.text = "";
         HealthText.text = HealthPoints.ToString();
     }
     public void InitiateCombat()
@@ -83,6 +90,7 @@ public class PlayerScript : MonoBehaviour
     {
         HealthPoints -= damageTaken;
         HealthText.text = HealthPoints.ToString();
+        damageReceivedText.text = damageTaken.ToString();   
         if(HealthPoints <= 0)
         {
             GameOver();
@@ -105,15 +113,21 @@ public class PlayerScript : MonoBehaviour
     public IEnumerator changeArmorCD(float cooldown)
     {
         armorChangeAvailable = false;
+        armorSwitchReady.text = "Armor on CoolDown";
         yield return new WaitForSeconds(cooldown);
         armorChangeAvailable = true;
+        armorSwitchReady.text = "Armor change Avaiable";
+
     }
 
     public IEnumerator changeWeaponCD(float cooldown)
     {
         weaponChangeAvailable = false;
+        weaponSwitchReady.text = "Weapon on CoolDown";
         yield return new WaitForSeconds(cooldown);
         weaponChangeAvailable = true;
+        weaponSwitchReady.text = "Weapon Switch Available";
+
     }
 
     public void GameOver()

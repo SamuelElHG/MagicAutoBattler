@@ -9,8 +9,10 @@ public class EnemyScript : MonoBehaviour
 {
     [SerializeField] private string name;
     public TMP_Text nameText;
+    public TMP_Text damageReceivedText;
 
     [SerializeField] private PlayerScript player;
+    [SerializeField] public SpriteRenderer activeArmorSprite, activeWeaponSprite;
 
     #region stats
     [SerializeField] public float AttackDamage, Defense, AttackSpeed, CriticalChance, HealthPoints;
@@ -31,6 +33,8 @@ public class EnemyScript : MonoBehaviour
 
     [SerializeField] private List<ArmorScript> armorsInventory;
     [SerializeField] private List <WeaponScript> weaponsInventory;
+
+    [SerializeField] private TMP_InputField healthInField, attackInField, defenseInField, agilityInField, luckInField;
     public void Start()
     {        nameText.text = name;
 
@@ -38,6 +42,13 @@ public class EnemyScript : MonoBehaviour
     }
     public void InitiateCombat()
     {
+
+        AttackDamage = float.Parse(attackInField.text);
+        HealthPoints = float.Parse(healthInField.text);
+        Defense = float.Parse(defenseInField.text);
+        AttackSpeed = float.Parse(agilityInField.text);
+        CriticalChance = float.Parse(luckInField.text);
+        HealthText.text = HealthPoints.ToString();
 
         Debug.Log("startedEverything");
         StartCoroutine(ArmorLoop());
@@ -54,7 +65,8 @@ public class EnemyScript : MonoBehaviour
     {
         HealthPoints -= damageTaken;
         HealthText.text = HealthPoints.ToString();
-        if(HealthPoints<=0)
+        damageReceivedText.text = damageTaken.ToString();
+        if (HealthPoints<=0)
         {
             WinGame();
         }
@@ -90,6 +102,7 @@ public class EnemyScript : MonoBehaviour
         if(armorChangeAvailable)
         {
             activeArmor = armorsInventory[Random.Range(0, armorsInventory.Count)];
+            activeArmorSprite.sprite = activeArmor.gameObject.GetComponent<SpriteRenderer>().sprite;
             StartCoroutine(armorChangeCD());
         }
     }
@@ -97,7 +110,7 @@ public class EnemyScript : MonoBehaviour
     private IEnumerator armorChangeCD()
     {
         armorChangeAvailable = false;
-        yield return new WaitForSeconds(activeArmor.cooldown);
+        yield return new WaitForSeconds(activeArmor.cooldown*2);
         armorChangeAvailable = true;
     }
     private IEnumerator ArmorLoop()
@@ -117,6 +130,7 @@ public class EnemyScript : MonoBehaviour
         if (weaponChangeAvailable)
         {
             activeWeapon = weaponsInventory[Random.Range(0, weaponsInventory.Count)];
+            activeWeaponSprite.sprite = activeWeapon.gameObject.GetComponent<SpriteRenderer>().sprite;
             StartCoroutine(weaponChangeCD());
         }
     }
@@ -124,7 +138,7 @@ public class EnemyScript : MonoBehaviour
     private IEnumerator weaponChangeCD()
     {
         weaponChangeAvailable = false;
-        yield return new WaitForSeconds(activeWeapon.weaponCooldown);
+        yield return new WaitForSeconds(activeWeapon.weaponCooldown*2);
         weaponChangeAvailable = true;
     }
     private IEnumerator WeaponLoop()

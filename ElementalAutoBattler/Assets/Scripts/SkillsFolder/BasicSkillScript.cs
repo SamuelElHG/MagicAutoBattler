@@ -11,7 +11,13 @@ public class BasicSkillScript : MonoBehaviour
     [SerializeField] protected float cooldown;
     [SerializeField] public bool Available = false;
     public SkillsInventory SkillSelector;
+    [SerializeField] private GameObject availableShower;
 
+    [SerializeField] public GameObject fondoSeleccionado;
+
+
+    public GameObject infoPanel;
+    public string infoText;
     // Update is called once per frame
     void Update()
     {
@@ -43,13 +49,25 @@ public class BasicSkillScript : MonoBehaviour
     public IEnumerator cdSkill()
     {
         Available = false;
+        availableShower.gameObject.SetActive(Available);
         yield return new WaitForSeconds(cooldown);
         Available = true;
+        availableShower.gameObject.SetActive(Available);
     }
 
 
     void OnMouseDown()
     {
         SkillSelector.SelectSkill(gameObject.GetComponent<BasicSkillScript>());
+    }
+
+    private void OnMouseEnter()
+    {
+        infoPanel.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        infoPanel.SetActive(false);
     }
 }

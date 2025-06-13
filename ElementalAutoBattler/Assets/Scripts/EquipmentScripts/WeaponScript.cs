@@ -12,6 +12,10 @@ public class WeaponScript : MonoBehaviour
     [SerializeField] public float weaponCooldown;
     [SerializeField] public Element weaponElement;
 
+    [SerializeField] public GameObject fondoSeleccionado;
+    public GameObject infoPanel;
+    public string infoText;
+
     [SerializeField] private PlayerScript playerObject; 
     public WeaponsInventory weaponSelector;
 
@@ -35,6 +39,7 @@ public class WeaponScript : MonoBehaviour
         if(playerObject.weaponChangeAvailable) {
 
             playerObject.activeWeapon = gameObject.GetComponent<WeaponScript>();
+            playerObject.activeWeaponSprite.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
             StartCoroutine(playerObject.changeWeaponCD(weaponCooldown));
         }
     }
@@ -43,5 +48,15 @@ public class WeaponScript : MonoBehaviour
     void OnMouseDown()
     {
         weaponSelector.SelectWeapon(gameObject.GetComponent<WeaponScript>());
+    }
+
+    private void OnMouseEnter()
+    {
+              infoPanel.SetActive(true);      
+    }
+
+    private void OnMouseExit()
+    {
+            infoPanel.SetActive(false);
     }
 }

@@ -6,6 +6,7 @@ public class Double : BasicSkillScript
 {
     [SerializeField] private PlayerScript player;
     [SerializeField] private float playerBaseSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,8 +45,11 @@ public class Double : BasicSkillScript
     {
 
         player.AttackSpeed = playerBaseSpeed*2;
+        player.BuffApplyed.text = "Double";
         yield return new WaitForSeconds(5);
         player.AttackSpeed = playerBaseSpeed;
+        player.BuffApplyed.text = "";
+
 
     }
 }

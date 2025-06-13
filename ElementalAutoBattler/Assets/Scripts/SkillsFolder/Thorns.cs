@@ -22,8 +22,12 @@ public class Thorns : BasicSkillScript
     {
 
         player.thorns = true;
-        yield return new WaitForSeconds(5);
-            player.thorns = false;
+        player.BuffApplyed.text = "Thorns";
+
+        yield return new WaitForSeconds(5); 
+        player.BuffApplyed.text = "Thorns";
+
+        player.thorns = false;
 
     }
 }
