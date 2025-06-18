@@ -87,3 +87,6 @@ crashlytics-build.properties
 *.wav
 *.pdf
 
+*.firebase
+*.bundle
+*.so
